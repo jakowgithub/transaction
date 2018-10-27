@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'com.infopulse'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven{
+        url "http://mvnrepository.com/artifact/"
+    }
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    compile 'org.postgresql:postgresql:42.2.5'
+}
+
+mainClassName = 'com.infopulse.main.Main'
