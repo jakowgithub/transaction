@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 public class TransactionFactory {
     public static final TransactionFactory factory = new TransactionFactory();
+
     private ThreadLocal<ConnectionWrap> threadLocal = new ThreadLocal<>();
     private ConnectionFactory connectionFactory = ConnectionFactory.instance();
 
@@ -18,14 +19,13 @@ public class TransactionFactory {
 
     public void beginTransaction()  {
         try {
-            Connection con = connectionFactory.getConnection();
-            con.setAutoCommit(false);
-            ConnectionWrap connectionWrap = new ConnectionWrap(con,true);
-            if(threadLocal.get()!=null){
-                throw new TransactionException("thransaction can not be started");
-            }
-            threadLocal.set(connectionWrap);
 
+            if(threadLocal.get() == null){
+                Connection con = connectionFactory.getConnection();
+                con.setAutoCommit(false);
+                ConnectionWrap connectionWrap = new ConnectionWrap(con,true);
+                threadLocal.set(connectionWrap);
+            }
         } catch (SQLException e) {
             throw new ConnectionException("can not receive connection");
         }
@@ -63,6 +63,12 @@ public class TransactionFactory {
                 throw new DataBaseException(sqlException);
             }
 
+        }finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                throw new DataBaseException(e);
+            }
         }
 
     }

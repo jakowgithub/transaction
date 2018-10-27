@@ -22,6 +22,17 @@ public class ConnectionWrap {
         return con;
     }
 
+    public void commit() throws SQLException {
+        if(!transactionFlag) {
+            con.commit();
+        }
+    }
+
+    public void rollBack() throws SQLException {
+        if(!transactionFlag) {
+            con.rollback();
+        }
+    }
 
     public void close() throws SQLException {
         if(!transactionFlag){
