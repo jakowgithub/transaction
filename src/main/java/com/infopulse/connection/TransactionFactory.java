@@ -9,11 +9,8 @@ import java.sql.SQLException;
 
 public class TransactionFactory {
     public static final TransactionFactory factory = new TransactionFactory();
-
     private ThreadLocal<ConnectionWrap> threadLocal = new ThreadLocal<>();
-
     private ConnectionFactory connectionFactory = ConnectionFactory.instance();
-
     public static TransactionFactory transactionFactory(){
         return factory;
     }
@@ -24,7 +21,7 @@ public class TransactionFactory {
             if(threadLocal.get() == null){
                 Connection con = connectionFactory.getConnection();
                 con.setAutoCommit(false);
-                ConnectionWrap connectionWrap = new ConnectionWrap(con,true);
+                ConnectionWrap connectionWrap = new ConnectionWrap(con, true);
                 threadLocal.set(connectionWrap);
             }
         } catch (SQLException e) {

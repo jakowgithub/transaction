@@ -9,13 +9,21 @@ import java.util.List;
 public class UtilDao {
 
     public static void insertClientOrder(Client c){
+
         TransactionFactory factory =  TransactionFactory.transactionFactory();
+
         DaoFactory daoFactory = DaoFactory.getInstance();
+
         ClientDAO clientDAO = daoFactory.getClientDao();
+
         OrderDAO orderDAO = daoFactory.getOrderDao();
+
         factory.beginTransaction();
+
         List<Order> orders = c.getOrders();
+
         Client createdClient = clientDAO.insertClient(c);
+
         for(Order order:orders){
             orderDAO.createOrder(order, createdClient.getId());
         }
