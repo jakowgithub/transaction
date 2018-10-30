@@ -11,6 +11,7 @@ public class TransactionFactory {
     public static final TransactionFactory factory = new TransactionFactory();
 
     private ThreadLocal<ConnectionWrap> threadLocal = new ThreadLocal<>();
+
     private ConnectionFactory connectionFactory = ConnectionFactory.instance();
 
     public static TransactionFactory transactionFactory(){
