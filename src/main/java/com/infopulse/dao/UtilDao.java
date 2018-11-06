@@ -24,9 +24,12 @@ public class UtilDao {
 
         Client createdClient = clientDAO.insertClient(c);
 
-        for(Order order:orders){
-            orderDAO.createOrder(order, createdClient.getId());
-        }
+
+        orders.forEach(order -> orderDAO.createOrder(order, createdClient.getId()));
+
+//        for(Order order:orders){
+//            orderDAO.createOrder(order, createdClient.getId());
+//        }
         factory.endTransaction();
 
     }

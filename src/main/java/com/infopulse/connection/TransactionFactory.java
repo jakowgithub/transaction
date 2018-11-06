@@ -11,6 +11,7 @@ public class TransactionFactory {
     public static final TransactionFactory factory = new TransactionFactory();
     private ThreadLocal<ConnectionWrap> threadLocal = new ThreadLocal<>();
     private ConnectionFactory connectionFactory = ConnectionFactory.instance();
+
     public static TransactionFactory transactionFactory(){
         return factory;
     }
@@ -24,30 +25,25 @@ public class TransactionFactory {
                 ConnectionWrap connectionWrap = new ConnectionWrap(con, true);
                 threadLocal.set(connectionWrap);
             }
-        } catch (SQLException e) {
-            throw new ConnectionException("can not receive connection");
-        }
+        } catch (SQLException e) { throw new ConnectionException("can not receive connection"); }
     }
 
     public ConnectionWrap getConnection(){
-        if(threadLocal.get()!=null){
-            return threadLocal.get();
-        }
+
+        if(threadLocal.get()!=null) return threadLocal.get();
+
         Connection con = null;
         try {
             con = connectionFactory.getConnection();
             con.setAutoCommit(false);
             ConnectionWrap connectionWrap = new ConnectionWrap(con,false);
             return  connectionWrap;
-        } catch (SQLException e) {
-            throw new ConnectionException("can not receive connection");
-        }
+        } catch (SQLException e) { throw new ConnectionException("can not receive connection"); }
     }
 
     public void endTransaction(){
-        if(threadLocal.get() == null){
-            throw new TransactionException("thransaction can not be finished");
-        }
+        if(threadLocal.get() == null) throw new TransactionException("thransaction can not be finished");
+
         ConnectionWrap connectionWrap = threadLocal.get();
         threadLocal.set(null);
         Connection con = connectionWrap.getConnection();

@@ -14,30 +14,22 @@ public class ConnectionWrap {
         this.transactionFlag = flag;
     }
 
-    public PreparedStatement preparedStatement(String sql) throws SQLException {
-        return con.prepareStatement(sql);
-    }
+    public PreparedStatement preparedStatement(String sql) throws SQLException { return con.prepareStatement(sql); }
 
     Connection getConnection() {
         return con;
     }
 
     public void commit() throws SQLException {
-        if(!transactionFlag) {
-            con.commit();
-        }
+        if(!transactionFlag)  con.commit();
     }
 
     public void rollBack() throws SQLException {
-        if(!transactionFlag) {
-            con.rollback();
-        }
+        if(!transactionFlag)  con.rollback();
     }
 
     public void close() throws SQLException {
-        if(!transactionFlag){
-            con.close();
-        }
+        if(!transactionFlag)    con.close();
     }
 
 }

@@ -10,27 +10,25 @@ import lombok.Setter;
 public class Order {
     Long id;
     String orderName;
+    Long clientId;
 
-    public Order(Long id, String orderName) {
+    public Order(Long id, String orderName, Long clientId) {
         this.id = id;
         this.orderName = orderName;
+        this.clientId = clientId;
     }
 
-    public Order();
+    public Order(){}
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
 
-    public String getOrderName() {
-        return orderName;
-    }
+    public String getOrderName() { return orderName; }
 
-    public void setOrderName(String orderName) {
-        this.orderName = orderName;
-    }
+    public void setOrderName(String orderName) { this.orderName = orderName; }
+
+    public Long getClientId() { return clientId; }
+
+    public void setClientId(Long clientId) { this.clientId = clientId; }
 }

@@ -16,14 +16,12 @@ public class ConnectionFactory {
         source.setDataSourceName("A Data Source");
         source.setServerName("localhost");
         source.setDatabaseName("transaction");
-        source.setUser("postgres");
-        source.setPassword("qwertyui");
+        source.setUser("jakow");
+        source.setPassword("pass1");
         source.setMaxConnections(10);
-        try {
-            new InitialContext().rebind("DataSource", source);
-        } catch (NamingException e) {
-            throw new RuntimeException(e);
-        }
+
+        try { new InitialContext().rebind("DataSource", source);
+        } catch (NamingException e) { throw new RuntimeException(e); }
     }
 
     public static ConnectionFactory instance(){
@@ -33,6 +31,5 @@ public class ConnectionFactory {
     public synchronized Connection getConnection() throws SQLException {
         return source.getConnection();
     }
-
 
 }

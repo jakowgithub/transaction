@@ -1,11 +1,44 @@
 package com.infopulse.dao.impl;
 
+import com.infopulse.connection.ConnectionWrap;
+import com.infopulse.connection.TransactionFactory;
 import com.infopulse.dao.OrderDAO;
 import com.infopulse.entity.Order;
+import com.infopulse.exception.DataBaseException;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class OrderDAOImpl implements OrderDAO {
+
+    public  OrderDAOImpl(){}
+
+    private  TransactionFactory factory = com.infopulse.connection.TransactionFactory.transactionFactory();
+
+
     @Override
-    public void createOrder(Order o, Long clientId) {
+    public void createOrder(Order order, Long clientId) {
         //todo: implementation
+        ConnectionWrap connectionWrap = factory.getConnection();
+        String orderName = order.getOrderName();
+
+        try {
+            PreparedStatement preparedStatement = connectionWrap.preparedStatement("insert into orders(ordername, clientid) values(?, ?)");
+
+            preparedStatement.setString(1, orderName);
+            preparedStatement.setLong(2,clientId);
+
+            preparedStatement.execute();
+
+            connectionWrap.commit();
+
+        } catch (SQLException e) { try { connectionWrap.rollBack();
+                                  } catch (SQLException sqlException) {throw new DataBaseException(sqlException);}
+                                   throw new DataBaseException(e);
+
+        }finally { try { connectionWrap.close();
+                  } catch (SQLException e) { throw new DataBaseException(e); }
+        }
+
     }
 }

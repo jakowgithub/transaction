@@ -1,6 +1,7 @@
 package com.infopulse.dao;
 
 import com.infopulse.dao.impl.ClientDAOImpl;
+import com.infopulse.dao.impl.OrderDAOImpl;
 
 public class DaoFactory {
     public static final DaoFactory factory = new DaoFactory();
