@@ -11,11 +11,8 @@ public class UtilDao {
     public static void insertClientOrder(Client c){
 
         TransactionFactory factory =  TransactionFactory.transactionFactory();
-
         DaoFactory daoFactory = DaoFactory.getInstance();
-
         ClientDAO clientDAO = daoFactory.getClientDao();
-
         OrderDAO orderDAO = daoFactory.getOrderDao();
 
         factory.beginTransaction();
