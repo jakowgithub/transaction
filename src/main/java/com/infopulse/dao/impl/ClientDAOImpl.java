@@ -20,13 +20,19 @@ public class ClientDAOImpl implements ClientDAO {
     public ClientDAOImpl(){ }
 
     public Client insertClient(Client c) {
-        ConnectionWrap connectionWrap = factory.getConnection();
-        String name = c.getName();
-        Client createdClient =null;
-        try {
-            PreparedStatement preparedStatement = connectionWrap.preparedStatement("insert into clients(name) values(?)");
 
-            preparedStatement.setString(1, name);
+        ConnectionWrap connectionWrap = factory.getConnection();
+
+        Client createdClient =null;
+
+        try {
+            PreparedStatement preparedStatementDell = connectionWrap.preparedStatement("delete from clients *; ");
+            preparedStatementDell.executeUpdate();
+
+            PreparedStatement preparedStatement = connectionWrap.preparedStatement("insert into clients values(?,?)");
+
+            preparedStatement.setLong(1, c.getId());
+            preparedStatement.setString(2, c.getName());
 
             preparedStatement.execute();
 
@@ -64,20 +70,20 @@ public class ClientDAOImpl implements ClientDAO {
         Client createdClient =null;
         List <Client> clients = new CopyOnWriteArrayList <> ();
 
-        try {
-            PreparedStatement preparedStatement = connectionWrap.preparedStatement("select * from clients");
-            ResultSet rs = preparedStatement.executeQuery();
-            if(rs.next()){
-                createdClient = new Client();
-                createdClient.setId(rs.getLong(1));
-                createdClient.setName(rs.getString(2));
-                clients.add(createdClient);
-            }
-        } catch (SQLException e){throw new DataBaseException(e);}
-
-        finally { try { connectionWrap.close();
-                  } catch (SQLException e) { throw new DataBaseException(e); }
-            }
+//        try {
+//            PreparedStatement preparedStatement = connectionWrap.preparedStatement("select * from clients");
+//            ResultSet rs = preparedStatement.executeQuery();
+//            if(rs.next()){
+//                createdClient = new Client();
+//                createdClient.setId(rs.getLong(1));
+//                createdClient.setName(rs.getString(2));
+//                clients.add(createdClient);
+//            }
+//        } catch (SQLException e){throw new DataBaseException(e);}
+//
+//        finally { try { connectionWrap.close();
+//                  } catch (SQLException e) { throw new DataBaseException(e); }
+//            }
         return clients;
 
     }

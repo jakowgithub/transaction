@@ -20,15 +20,19 @@ public class OrderDAOImpl implements OrderDAO {
     public void createOrder(Order order, Long clientId) {
         //todo: implementation
         ConnectionWrap connectionWrap = factory.getConnection();
-        String orderName = order.getOrderName();
 
         try {
-            PreparedStatement preparedStatement = connectionWrap.preparedStatement("insert into orders(ordername, clientid) values(?, ?)");
+            PreparedStatement preparedStatementDell = connectionWrap.preparedStatement("delete from orders * ; ");
+            preparedStatementDell.executeUpdate();
 
-            preparedStatement.setString(1, orderName);
-            preparedStatement.setLong(2,clientId);
+            PreparedStatement preparedStatement = connectionWrap.preparedStatement("insert into orders values(?,?,?)");
 
-            preparedStatement.execute();
+            preparedStatement.setLong(1, order.getId());
+            preparedStatement.setString(2, order.getOrderName());
+            preparedStatement.setLong(3, clientId);
+
+            preparedStatement.executeUpdate();
+            //preparedStatement.execute();
 
             connectionWrap.commit();
 
