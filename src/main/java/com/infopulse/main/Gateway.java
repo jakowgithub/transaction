@@ -32,16 +32,16 @@ public class Gateway {
 
         clients.forEach(client -> {
             System.out.println(client.getId()+" "+client.getName());
-            client.getOrders().forEach(order -> System.out.println("                  " + order.getOrderName()));
+            client.getOrders().forEach(order -> System.out.println("    create " + order.getOrderName()));
         });
 
-        clients.forEach(client ->  UtilDao.insertClientOrder(client));
+        clients.forEach(UtilDao::insertClientOrder);
 
         List<Client> clientsPull = ClientDAOImpl.pullAllClient();
 
        clientsPull.forEach(client -> {
            System.out.println(client.getId()+" "+client.getName());
-           client.getOrders().forEach(order -> System.out.println("                  " + order.getOrderName()));
+           client.getOrders().forEach(Order::printlnOrderName);
         });
     }
 }

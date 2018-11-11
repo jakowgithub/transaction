@@ -31,4 +31,6 @@ public class Order {
     public Long getClientId() { return clientId; }
 
     public void setClientId(Long clientId) { this.clientId = clientId; }
+
+    public static void printlnOrderName(Order order) { System.out.println("     pull " +order.getOrderName()); }
 }
