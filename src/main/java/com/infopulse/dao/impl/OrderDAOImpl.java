@@ -5,7 +5,6 @@ import com.infopulse.connection.TransactionFactory;
 import com.infopulse.dao.OrderDAO;
 import com.infopulse.entity.Order;
 import com.infopulse.exception.DataBaseException;
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -14,7 +13,7 @@ public class OrderDAOImpl implements OrderDAO {
     public  OrderDAOImpl(){}
 
     private  TransactionFactory factory = com.infopulse.connection.TransactionFactory.transactionFactory();
-
+    private static boolean flagDellOrder =true;
 
     @Override
     public void createOrder(Order order, Long clientId) {
@@ -22,17 +21,19 @@ public class OrderDAOImpl implements OrderDAO {
         ConnectionWrap connectionWrap = factory.getConnection();
 
         try {
-            PreparedStatement preparedStatementDell = connectionWrap.preparedStatement("delete from orders * ; ");
-            preparedStatementDell.executeUpdate();
-
+            if(flagDellOrder){
+                flagDellOrder = false;
+                PreparedStatement preparedStatementDell = connectionWrap.preparedStatement("delete from orders; ");
+                preparedStatementDell.execute();
+        }
             PreparedStatement preparedStatement = connectionWrap.preparedStatement("insert into orders values(?,?,?)");
 
             preparedStatement.setLong(1, order.getId());
             preparedStatement.setString(2, order.getOrderName());
             preparedStatement.setLong(3, clientId);
 
-            preparedStatement.executeUpdate();
-            //preparedStatement.execute();
+            //preparedStatement.executeUpdate();
+            preparedStatement.execute();
 
             connectionWrap.commit();
 

@@ -18,9 +18,6 @@ public class TransactionFactory {
 
     public void beginTransaction()  {
         try {
-
-           // Class.forName("org.postgresql.Driver");
-
             if(threadLocal.get() == null){
                 Connection con = connectionFactory.getConnection();
                 con.setAutoCommit(false);
@@ -28,7 +25,6 @@ public class TransactionFactory {
                 threadLocal.set(connectionWrap);
             }
         } catch (SQLException e) { throw new ConnectionException("can not receive connection"); }
-    //| ClassNotFoundException
     }
 
     public ConnectionWrap getConnection(){
@@ -56,9 +52,7 @@ public class TransactionFactory {
             try {
                 con.rollback();
                 throw new TransactionException(e);
-            } catch (SQLException sqlException) {
-                throw new DataBaseException(sqlException);
-            }
+            } catch (SQLException sqlException) { throw new DataBaseException(sqlException); }
 
         }finally {
             try {

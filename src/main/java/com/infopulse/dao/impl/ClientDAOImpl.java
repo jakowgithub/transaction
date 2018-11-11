@@ -5,17 +5,22 @@ import com.infopulse.connection.TransactionFactory;
 import com.infopulse.dao.ClientDAO;
 import com.infopulse.entity.Client;
 
+import com.infopulse.entity.Order;
 import com.infopulse.exception.DataBaseException;
+import com.infopulse.main.Gateway;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ClientDAOImpl implements ClientDAO {
 
-    private TransactionFactory factory = TransactionFactory.transactionFactory();
+    private  static TransactionFactory factory = TransactionFactory.transactionFactory();
+    private static boolean flagDellClient =true;
 
     public ClientDAOImpl(){ }
 
@@ -26,9 +31,12 @@ public class ClientDAOImpl implements ClientDAO {
         Client createdClient =null;
 
         try {
-            PreparedStatement preparedStatementDell = connectionWrap.preparedStatement("delete from clients *; ");
-            preparedStatementDell.executeUpdate();
+            if (flagDellClient) {
 
+                flagDellClient = false;
+                PreparedStatement preparedStatementDell = connectionWrap.preparedStatement("delete from clients; ");
+                preparedStatementDell.execute();
+            }
             PreparedStatement preparedStatement = connectionWrap.preparedStatement("insert into clients values(?,?)");
 
             preparedStatement.setLong(1, c.getId());
@@ -44,7 +52,7 @@ public class ClientDAOImpl implements ClientDAO {
 
             ResultSet rs = preparedStatement.executeQuery();
 
-            if(rs.next()){
+            while (rs.next()){
                 createdClient = new Client();
                 createdClient.setId(rs.getLong(1));
                 createdClient.setName(rs.getString(2));
@@ -66,25 +74,48 @@ public class ClientDAOImpl implements ClientDAO {
     @Override
     public List<Client> findAll() {
         //todo:implementation
+
         ConnectionWrap connectionWrap = factory.getConnection();
         Client createdClient =null;
         List <Client> clients = new CopyOnWriteArrayList <> ();
-
-//        try {
-//            PreparedStatement preparedStatement = connectionWrap.preparedStatement("select * from clients");
-//            ResultSet rs = preparedStatement.executeQuery();
-//            if(rs.next()){
-//                createdClient = new Client();
-//                createdClient.setId(rs.getLong(1));
-//                createdClient.setName(rs.getString(2));
-//                clients.add(createdClient);
-//            }
-//        } catch (SQLException e){throw new DataBaseException(e);}
-//
-//        finally { try { connectionWrap.close();
-//                  } catch (SQLException e) { throw new DataBaseException(e); }
-//            }
         return clients;
+    }
 
+    public   static  List<Client> pullAllClient() {
+        //todo:implementation
+        ConnectionWrap connectionWrap = factory.getConnection();
+        Client createdClient;
+        List <Client> clients = new ArrayList<>();
+
+        try {
+            PreparedStatement preparedStatement = connectionWrap.preparedStatement("select * from clients");
+            ResultSet rsClients = preparedStatement.executeQuery();
+
+            while (rsClients.next()){
+                createdClient = new Client();
+                createdClient.setId(rsClients.getLong(1));
+                createdClient.setName(rsClients.getString(2));
+
+                List <Order> orders = new ArrayList<>();
+                preparedStatement = connectionWrap.preparedStatement("select * from orders where clientid=?");
+                preparedStatement.setLong(1, createdClient.getId());
+                ResultSet rsOrders = preparedStatement.executeQuery();
+
+                while (rsOrders.next()){
+                  Order createdOrder = new Order();
+                  createdOrder.setId(rsOrders.getLong(1));
+                  createdOrder.setOrderName(rsOrders.getString(2));
+                  createdOrder.setClientId(rsOrders.getLong(3));
+                  orders.add(createdOrder);
+                }
+                createdClient.setOrders(orders);
+                clients.add(createdClient);
+            }
+        } catch (SQLException e){throw new DataBaseException(e);}
+
+        finally { try { connectionWrap.close();
+                } catch (SQLException e) { throw new DataBaseException(e); }
+        }
+        return clients;
     }
 }
