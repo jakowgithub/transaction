@@ -19,6 +19,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'org.postgresql:postgresql:42.2.5'
     compile 'org.projectlombok:lombok:1.18.2'
+    compile 'org.postgresql.ds.PGSimpleDataSource'
+    
 }
 
 mainClassName = 'com.infopulse.main.Main'
