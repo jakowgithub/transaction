@@ -4,9 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//@Getter
-//@Setter
-//@NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class Order {
     Long id;
     String orderName;
@@ -17,8 +17,6 @@ public class Order {
         this.orderName = orderName;
         this.clientId = clientId;
     }
-
-    public Order(){}
 
     public Long getId() { return id; }
 

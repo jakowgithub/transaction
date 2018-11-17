@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ClientDAOImpl implements ClientDAO {
 
     private  static TransactionFactory factory = TransactionFactory.transactionFactory();
-    private static boolean flagDellClient =true;
+    private boolean flagDellClient =true;
 
     public ClientDAOImpl(){ }
 

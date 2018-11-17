@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="slf4j-api-1.7.25">
     <CLASSES>
-      <root url="jar://C:/Instal-64/Java/slf4j-1.7.25/slf4j-api-1.7.25.jar!/" />
-      <root url="jar://C:/Instal-64/Java/slf4j-1.7.25/slf4j-nop-1.7.25.jar!/" />
+      <root url="jar://$PROJECT_DIR$/slf4j-api-1.7.25.jar!/" />
+      <root url="jar://$PROJECT_DIR$/slf4j-nop-1.7.25.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://C:/Instal-64/Java/slf4j-1.7.25/slf4j-ext-1.7.25-sources.jar!/" />
-      <root url="jar://C:/Instal-64/Java/slf4j-1.7.25/slf4j-nop-1.7.25-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/slf4j-api-1.7.25-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/slf4j-nop-1.7.25-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

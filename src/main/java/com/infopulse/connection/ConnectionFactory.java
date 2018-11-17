@@ -1,15 +1,14 @@
 package com.infopulse.connection;
 
-import com.infopulse.exception.ConnectionException;
+//import com.infopulse.exception.ConnectionException;
 import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.DriverManager;
 
 public class ConnectionFactory {
     public static final ConnectionFactory factory = new ConnectionFactory();
     private HikariDataSource ds = new HikariDataSource();
-    private String jdbcDB,localhost, databaseName,useSSL, user, password ;
+    //private String jdbcDB,localhost, databaseName,useSSL, user, password ;
 
 
     private ConnectionFactory() {
@@ -18,16 +17,16 @@ public class ConnectionFactory {
         ds.setUsername("jakow");
         ds.setPassword("pass1");
 
-        jdbcDB="jdbc:postgresql://";
-        localhost = "localhost/";
-        databaseName="transaction?";
-        useSSL = "useSSL=false&";
-        user="user=jakow&";
-        password = "password=pass1";
+//        jdbcDB="jdbc:postgresql://";
+//        localhost = "localhost/";
+//        databaseName="transaction?";
+//        useSSL = "useSSL=false&";
+//        user="user=jakow&";
+//        password = "password=pass1";
 
-       try { Class.forName("org.postgresql.Driver");
-           } catch ( ClassNotFoundException e) { throw new ConnectionException(e); }
-    }
+//       try { Class.forName("org.postgresql.Driver");
+//           } catch ( ClassNotFoundException e) { throw new ConnectionException(e); }
+   }
 
     public static ConnectionFactory instance(){ return factory ; }
 
